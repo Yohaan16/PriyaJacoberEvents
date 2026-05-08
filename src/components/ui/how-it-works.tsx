@@ -15,7 +15,15 @@ export function HowItWorks() {
   const isInView = useInView(ref, { once: true, margin: "-80px" });
 
   return (
-    <section id="how-it-works" className="section-padding bg-white" ref={ref}>
+    <section className="section-padding bg-white min-h-full flex flex-col justify-center" ref={ref}>
+      {/* Logo */}
+      <div className="flex justify-center mb-6 md:mb-8">
+        <img
+          src="/logo.png"
+          alt="Priya Jacober Events"
+          className="w-80 md:w-96 h-auto object-contain"
+        />
+      </div>
       <div className="max-w-7xl mx-auto">
         <motion.div className="text-center mb-16" initial={{ opacity: 0, y: 30 }} animate={isInView ? { opacity: 1, y: 0 } : {}} transition={{ duration: 0.7 }}>
           <p className="text-primary text-sm uppercase tracking-[0.2em] font-medium mb-4">Process</p>

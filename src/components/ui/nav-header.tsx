@@ -3,7 +3,15 @@
 import React, { useRef, useState } from "react";
 import { motion } from "framer-motion";
 
-function NavHeader() {
+function navigateToSection(section: string) {
+  window.dispatchEvent(new CustomEvent("pje-navigate", { detail: section }));
+}
+
+interface NavHeaderProps {
+  activeSection?: string;
+}
+
+function NavHeader({ activeSection }: NavHeaderProps) {
   const [position, setPosition] = useState({
     left: 0,
     width: 0,
@@ -12,11 +20,12 @@ function NavHeader() {
   const [mobileOpen, setMobileOpen] = useState(false);
 
   const tabs = [
-    { label: "Home", href: "#home" },
-    { label: "About", href: "#about" },
-    { label: "Services", href: "#services" },
-    { label: "How It Works", href: "#how-it-works" },
-    { label: "Contact", href: "#contact" },
+    { label: "Home", section: "home" },
+    { label: "About", section: "about" },
+    { label: "Services", section: "services" },
+    { label: "Packages", section: "packages" },
+    { label: "How It Works", section: "how-it-works" },
+    { label: "Contact", section: "contact" },
   ];
 
   return (
@@ -27,7 +36,12 @@ function NavHeader() {
         onMouseLeave={() => setPosition((pv) => ({ ...pv, opacity: 0 }))}
       >
         {tabs.map((tab) => (
-          <Tab key={tab.label} setPosition={setPosition} href={tab.href}>
+          <Tab
+            key={tab.label}
+            setPosition={setPosition}
+            section={tab.section}
+            isActive={activeSection === tab.section}
+          >
             {tab.label}
           </Tab>
         ))}
@@ -58,14 +72,20 @@ function NavHeader() {
           className="md:hidden absolute top-16 left-4 right-4 glass rounded-2xl shadow-xl p-4"
         >
           {tabs.map((tab) => (
-            <a
+            <button
               key={tab.label}
-              href={tab.href}
-              onClick={() => setMobileOpen(false)}
-              className="block py-3 px-4 text-sm font-medium text-foreground hover:text-primary transition-colors border-b border-accent/30 last:border-0"
+              onClick={() => {
+                navigateToSection(tab.section);
+                setMobileOpen(false);
+              }}
+              className={`block w-full text-left py-3 px-4 text-sm font-medium transition-colors border-b border-accent/30 last:border-0 ${
+                activeSection === tab.section
+                  ? "text-primary"
+                  : "text-foreground hover:text-primary"
+              }`}
             >
               {tab.label}
-            </a>
+            </button>
           ))}
         </motion.div>
       )}
@@ -76,11 +96,13 @@ function NavHeader() {
 const Tab = ({
   children,
   setPosition,
-  href,
+  section,
+  isActive,
 }: {
   children: React.ReactNode;
   setPosition: React.Dispatch<React.SetStateAction<{ left: number; width: number; opacity: number }>>;
-  href: string;
+  section: string;
+  isActive?: boolean;
 }) => {
   const ref = useRef<HTMLLIElement>(null);
   return (
@@ -97,12 +119,14 @@ const Tab = ({
       }}
       className="relative z-10 block cursor-pointer"
     >
-      <a
-        href={href}
-        className="block px-4 py-2.5 text-xs uppercase tracking-wider font-medium text-foreground mix-blend-difference lg:px-6 lg:py-3 lg:text-sm transition-colors"
+      <button
+        onClick={() => navigateToSection(section)}
+        className={`block px-4 py-2.5 text-xs uppercase tracking-wider font-medium mix-blend-difference lg:px-6 lg:py-3 lg:text-sm transition-colors ${
+          isActive ? "text-primary" : "text-foreground"
+        }`}
       >
         {children}
-      </a>
+      </button>
     </li>
   );
 };
@@ -118,4 +142,5 @@ const Cursor = ({ position }: { position: { left: number; width: number; opacity
   );
 };
 
+export { navigateToSection };
 export default NavHeader;

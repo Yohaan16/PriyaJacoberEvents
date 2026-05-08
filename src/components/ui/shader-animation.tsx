@@ -34,7 +34,7 @@ export function ShaderAnimation() {
 
       void main(void) {
         vec2 uv = (gl_FragCoord.xy * 2.0 - resolution.xy) / min(resolution.x, resolution.y);
-        float t = time * 0.03;
+        float t = time * 0.08;
         float lineWidth = 0.0015;
 
         // Gold channel (warm)

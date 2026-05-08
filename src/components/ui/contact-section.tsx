@@ -6,12 +6,12 @@ import { Mail, Phone, Send } from "lucide-react";
 
 const eventTypes = [
   "Birthday Party",
+  "Ladies' Night",
+  "Private Celebration",
+  "Small Luxury Gathering",
   "Corporate Event",
-  "Company Party",
-  "Private House Party",
-  "Ladies' Event",
-  "Community Event",
-  "Destination Event",
+  "Company / Christmas Party",
+  "Summer Party / Team Event",
   "Other",
 ];
 
@@ -28,7 +28,15 @@ export function ContactSection() {
   };
 
   return (
-    <section id="contact" className="section-padding" style={{ background: "var(--secondary)" }} ref={ref}>
+    <section className="section-padding min-h-full flex flex-col justify-center" style={{ background: "var(--secondary)" }} ref={ref}>
+      {/* Logo */}
+      <div className="flex justify-center mb-6 md:mb-8">
+        <img
+          src="/logo.png"
+          alt="Priya Jacober Events"
+          className="w-80 md:w-96 h-auto object-contain"
+        />
+      </div>
       <div className="max-w-7xl mx-auto">
         <motion.div className="text-center mb-16" initial={{ opacity: 0, y: 30 }} animate={isInView ? { opacity: 1, y: 0 } : {}} transition={{ duration: 0.7 }}>
           <p className="text-primary text-sm uppercase tracking-[0.2em] font-medium mb-4">Get In Touch</p>

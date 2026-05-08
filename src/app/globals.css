@@ -30,36 +30,38 @@
 }
 
 html {
-  scroll-behavior: smooth;
+  scroll-behavior: auto;
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
   font-family: 'Inter', sans-serif;
-  overflow-x: hidden;
+  overflow: hidden;
+  height: 100vh;
 }
 
 h1, h2, h3, h4, h5, h6 {
   font-family: 'Playfair Display', serif;
 }
 
-/* Custom scrollbar */
-::-webkit-scrollbar {
-  width: 8px;
+/* ── Horizontal panel layout ── */
+.panel {
+  min-width: 100vw;
+  width: 100vw;
+  height: 100%;
+  overflow-y: auto;
+  overflow-x: hidden;
+  flex-shrink: 0;
 }
 
-::-webkit-scrollbar-track {
-  background: var(--secondary);
+/* Hide scrollbars for panels */
+.panel {
+  scrollbar-width: none;
 }
 
-::-webkit-scrollbar-thumb {
-  background: var(--primary);
-  border-radius: 4px;
-}
-
-::-webkit-scrollbar-thumb:hover {
-  background: var(--primary-light);
+.panel::-webkit-scrollbar {
+  display: none;
 }
 
 /* Marquee animation */

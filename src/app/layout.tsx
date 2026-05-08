@@ -15,22 +15,23 @@ const playfair = Playfair_Display({
 });
 
 export const metadata: Metadata = {
-  title: "Priya Jacober Events | Event Planning in Zurich, Switzerland",
+  title: "Priya Jacober Events | Making Every Moment Unforgettable",
   description:
-    "Professional event planning in Zurich. We organize birthdays, corporate events, destination events, private parties, and more. Stress-free, personal, and reliable.",
+    "Stress-free event planning for private, luxury & corporate occasions in Zurich. We organize birthdays, ladies' nights, luxury gatherings, corporate events, and more.",
   keywords: [
     "event planning",
     "Zurich events",
     "corporate events",
     "birthday party",
-    "destination events",
+    "luxury events",
+    "private events",
     "Switzerland",
     "Priya Jacober",
   ],
   openGraph: {
-    title: "Priya Jacober Events | Events Made Easy for Everyone",
+    title: "Priya Jacober Events | Making Every Moment Unforgettable",
     description:
-      "We plan and coordinate events that fit your style, your budget, and your life.",
+      "Stress-free event planning for private, luxury & corporate occasions in Zurich.",
     type: "website",
     locale: "en_CH",
   },

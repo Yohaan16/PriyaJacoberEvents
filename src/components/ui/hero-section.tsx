@@ -11,8 +11,8 @@ export function HeroSection() {
     visible: {
       opacity: 1,
       transition: {
-        staggerChildren: 0.15,
-        delayChildren: 0.4,
+        staggerChildren: 0.08,
+        delayChildren: 0.02,
       },
     },
   };
@@ -23,16 +23,27 @@ export function HeroSection() {
       y: 0,
       opacity: 1,
       transition: {
-        duration: 0.7,
+        duration: 1.2,
         ease: "easeOut" as const,
       },
     },
   };
 
   return (
-    <section id="home" className="relative w-full min-h-screen flex items-center overflow-hidden">
-      {/* Shader Background */}
-      <ShaderAnimation />
+    <section className="relative w-full min-h-full flex items-center overflow-hidden">
+      {/* Logo background — revealed behind the shader */}
+      <div className="absolute inset-0 flex items-center justify-center bg-white">
+        <img
+          src="/logo.png"
+          alt=""
+          className="w-[50vw] max-w-[600px] h-auto object-contain opacity-1000"
+        />
+      </div>
+
+      {/* Shader Background — sits on top of the logo, partially transparent */}
+      <div className="absolute inset-0" style={{ mixBlendMode: "multiply" }}>
+        <ShaderAnimation />
+      </div>
 
       {/* Dark overlay for text readability */}
       <div className="absolute inset-0 bg-black/40" />
@@ -56,9 +67,9 @@ export function HeroSection() {
           style={{ fontFamily: "'Playfair Display', serif" }}
           variants={itemVariants}
         >
-          Events Made Easy
+          Making Every Moment
           <br />
-          <span className="gold-shimmer">for Everyone</span>
+          <span className="gold-shimmer">Unforgettable</span>
         </motion.h1>
 
         <motion.div
@@ -71,19 +82,21 @@ export function HeroSection() {
           className="text-white/80 text-base md:text-lg max-w-xl mb-4 leading-relaxed"
           variants={itemVariants}
         >
-          We plan and coordinate events that fit your style, your budget, and your life —
-          from small gatherings to big celebrations.
+          Stress‑Free Event Planning for Private, Luxury &amp; Corporate Occasions in Zurich.
+          We turn your ideas into beautifully executed experiences.
         </motion.p>
 
         <motion.p
           className="text-accent-light text-sm md:text-base font-medium tracking-wide mb-10"
           variants={itemVariants}
         >
-          Stress-free · Personal · Reliable
+          Private · Luxury · Corporate
         </motion.p>
 
-        <motion.a
-          href="#contact"
+        <motion.button
+          onClick={() => {
+            window.dispatchEvent(new CustomEvent("pje-navigate", { detail: "contact" }));
+          }}
           className="inline-block px-8 py-4 rounded-full text-sm md:text-base font-semibold uppercase tracking-widest text-white transition-all duration-300 hover:scale-105 hover:shadow-xl hover:shadow-primary/20"
           style={{ background: "var(--gold-gradient)" }}
           variants={itemVariants}
@@ -91,7 +104,7 @@ export function HeroSection() {
           whileTap={{ scale: 0.98 }}
         >
           Plan Your Event
-        </motion.a>
+        </motion.button>
 
         {/* Contact info strip */}
         <motion.div
@@ -110,23 +123,6 @@ export function HeroSection() {
             <MapPin className="w-4 h-4 text-primary" />
             <span>Zurich, Switzerland</span>
           </div>
-        </motion.div>
-      </motion.div>
-
-      {/* Scroll indicator */}
-      <motion.div
-        className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2"
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ delay: 2, duration: 1 }}
-      >
-        <span className="text-white/40 text-xs uppercase tracking-widest">Scroll</span>
-        <motion.div
-          className="w-5 h-8 rounded-full border-2 border-white/30 flex justify-center pt-1"
-          animate={{ y: [0, 4, 0] }}
-          transition={{ duration: 1.5, repeat: Infinity }}
-        >
-          <div className="w-1 h-2 rounded-full bg-primary" />
         </motion.div>
       </motion.div>
     </section>

@@ -10,7 +10,15 @@ export function AboutSection() {
   const isInView = useInView(ref, { once: true, margin: "-100px" });
 
   return (
-    <section id="about" className="section-padding bg-white" ref={ref}>
+    <section className="section-padding bg-white" ref={ref}>
+      {/* Logo */}
+      <div className="flex justify-center mb-6 md:mb-8">
+        <img
+          src="/logo.png"
+          alt="Priya Jacober Events"
+          className="w-80 md:w-96 h-auto object-contain"
+        />
+      </div>
       <div className="max-w-7xl mx-auto">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-center">
           {/* Text Side */}
@@ -26,10 +34,12 @@ export function AboutSection() {
               className="text-3xl md:text-4xl lg:text-5xl font-bold text-foreground mb-8 leading-tight"
               style={{ fontFamily: "'Playfair Display', serif" }}
             >
-              We Make Event Planning{" "}
-              <span className="text-primary">Simple</span>
+              About <span className="text-primary">Us</span>
             </h2>
             <div className="w-16 h-1 rounded-full bg-primary mb-8" />
+            <p className="text-muted-foreground leading-relaxed mb-6 text-base md:text-lg">
+              We make event planning simple and create memorable experiences you&apos;ll never forget.
+            </p>
             <p className="text-muted-foreground leading-relaxed mb-6 text-base md:text-lg">
               I&apos;m Priya Jacober, Co-Founder and Event Manager based in Zurich.
               After many years as a lead coordinator in the telecom industry,
@@ -37,22 +47,22 @@ export function AboutSection() {
               Today, I combine strong organizational skills with creativity to bring
               meaningful events to life.
             </p>
-            <p className="text-muted-foreground leading-relaxed mb-8 text-base md:text-lg">
-              Together with my team, we organize: Company, summer &amp; Christmas parties;
-              corporate team events; birthday celebrations; private gatherings &amp;
-              themed parties; ladies&apos; events; community &amp; destination events.
-              We work with trusted partners for catering, photography, DJs, decorations,
-              flowers, and entertainment.
+            <p className="text-muted-foreground leading-relaxed mb-6 text-base md:text-lg">
+              Together with my team, we organize: Company events • Summer &amp; Christmas parties •
+              Corporate team events • Birthday celebrations • Private gatherings • Ladies&apos; events.
             </p>
-            <a
-              href="#services"
+            <p className="text-muted-foreground leading-relaxed mb-8 text-base md:text-lg">
+              We work with trusted partners for Catering • Photography • DJs • Decorations • Entertainment.
+            </p>
+            <button
+              onClick={() => window.dispatchEvent(new CustomEvent("pje-navigate", { detail: "services" }))}
               className="inline-flex items-center gap-2 text-primary font-semibold text-sm uppercase tracking-wider hover:gap-3 transition-all duration-300"
             >
               Explore Our Services
               <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
               </svg>
-            </a>
+            </button>
           </motion.div>
 
           {/* Image Side */}

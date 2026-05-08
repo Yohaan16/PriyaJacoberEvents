@@ -1,114 +1,109 @@
 "use client";
 
 import React, { useRef } from "react";
-import { motion, useScroll, useTransform } from "framer-motion";
-
-const IMG_PADDING = 12;
+import { motion, useInView } from "framer-motion";
 
 const services = [
   {
-    imgUrl: "https://images.unsplash.com/photo-1530103862676-de8c9debad1d?w=1200&auto=format&fit=crop&q=80",
-    subheading: "Celebrate",
-    heading: "Birthday & Private Parties",
-    title: "Make Every Milestone Memorable",
-    description: "From surprise birthday bashes to elegant private gatherings, we create celebrations that reflect your personality. We handle venue selection, décor, catering, entertainment, and every detail in between.",
-    services: ["Birthday Parties", "Private House Parties", "Ladies' Events", "Themed Parties"],
+    imgUrl: "https://images.unsplash.com/photo-1530103862676-de8c9debad1d?w=800&auto=format&fit=crop&q=80",
+    heading: "Private Events",
+    description: "Whether you're celebrating a birthday, hosting a ladies' night, or planning a private celebration — we create events that reflect your personality.",
+    tags: ["Birthdays", "Ladies' Nights", "Private Celebrations", "Themed Parties"],
   },
   {
-    imgUrl: "https://images.unsplash.com/photo-1540575467063-178a50c2df87?w=1200&auto=format&fit=crop&q=80",
-    subheading: "Collaborate",
-    heading: "Corporate & Team Events",
-    title: "Professional Events, Flawlessly Executed",
-    description: "Build team spirit and impress clients with expertly coordinated corporate events. From summer parties to annual galas, we bring professionalism and creativity to every corporate gathering.",
-    services: ["Corporate Events", "Team Building", "Company Parties", "Summer & Christmas Parties"],
+    imgUrl: "https://images.unsplash.com/photo-1519225421980-715cb0215aed?w=800&auto=format&fit=crop&q=80",
+    heading: "Small Luxury Gatherings",
+    description: "From boutique and beauty events to intimate dinners and stylish private parties in Zurich — curated experiences for discerning hosts.",
+    tags: ["Boutique Events", "Beauty Experiences", "Intimate Dinners", "Stylish Parties"],
   },
   {
-    imgUrl: "https://images.unsplash.com/photo-1464366400600-7168b8af9bc3?w=1200&auto=format&fit=crop&q=80",
-    subheading: "Explore",
-    heading: "Destination Events",
-    title: "Unforgettable Events in Stunning Locations",
-    description: "Take your celebration to Switzerland's breathtaking landscapes or the tropical beauty of Mauritius. We coordinate every detail of your destination event, from travel logistics to on-site management.",
-    services: ["Switzerland Events", "Mauritius Events", "Community Events", "Full Planning or Partial Support"],
+    imgUrl: "https://images.unsplash.com/photo-1540575467063-178a50c2df87?w=800&auto=format&fit=crop&q=80",
+    heading: "Corporate Events",
+    description: "Build team spirit and impress clients with expertly coordinated corporate events — from company celebrations to Christmas galas.",
+    tags: ["Company Celebrations", "Christmas Parties", "Summer Parties", "Team Events"],
   },
 ];
 
-function StickyImage({ imgUrl }: { imgUrl: string }) {
-  const targetRef = useRef(null);
-  const { scrollYProgress } = useScroll({ target: targetRef, offset: ["end end", "end start"] });
-  const scale = useTransform(scrollYProgress, [0, 1], [1, 0.85]);
-  const opacity = useTransform(scrollYProgress, [0, 1], [1, 0]);
+export function ServicesParallax() {
+  const ref = useRef(null);
+  const isInView = useInView(ref, { once: true, margin: "-60px" });
 
   return (
-    <motion.div
-      style={{ backgroundImage: `url(${imgUrl})`, backgroundSize: "cover", backgroundPosition: "center", height: `calc(100vh - ${IMG_PADDING * 2}px)`, top: IMG_PADDING, scale }}
-      ref={targetRef}
-      className="sticky z-0 overflow-hidden rounded-3xl"
-    >
-      <motion.div className="absolute inset-0 bg-black/50" style={{ opacity }} />
-    </motion.div>
-  );
-}
+    <section className="section-padding bg-white min-h-full flex flex-col justify-center" ref={ref}>
+      {/* Logo */}
+      <div className="flex justify-center mb-6 md:mb-8">
+        <img
+          src="/logo.png"
+          alt="Priya Jacober Events"
+          className="w-80 md:w-96 h-auto object-contain"
+        />
+      </div>
+      <div className="max-w-7xl mx-auto w-full">
+        <motion.div
+          className="text-center mb-12 md:mb-16"
+          initial={{ opacity: 0, y: 30 }}
+          animate={isInView ? { opacity: 1, y: 0 } : {}}
+          transition={{ duration: 0.7 }}
+        >
+          <p className="text-primary text-sm uppercase tracking-[0.2em] font-medium mb-4">What We Offer</p>
+          <h2
+            className="text-3xl md:text-4xl lg:text-5xl font-bold text-foreground mb-6"
+            style={{ fontFamily: "'Playfair Display', serif" }}
+          >
+            Our <span className="text-primary">Services</span>
+          </h2>
+          <div className="w-16 h-1 rounded-full bg-primary mx-auto" />
+        </motion.div>
 
-function OverlayCopy({ subheading, heading }: { subheading: string; heading: string }) {
-  const targetRef = useRef(null);
-  const { scrollYProgress } = useScroll({ target: targetRef, offset: ["start end", "end start"] });
-  const y = useTransform(scrollYProgress, [0, 1], [250, -250]);
-  const opacity = useTransform(scrollYProgress, [0.25, 0.5, 0.75], [0, 1, 0]);
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 lg:gap-8">
+          {services.map((service, index) => (
+            <motion.div
+              key={service.heading}
+              className="group relative rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-500 cursor-default"
+              initial={{ opacity: 0, y: 40 }}
+              animate={isInView ? { opacity: 1, y: 0 } : {}}
+              transition={{ duration: 0.6, delay: index * 0.15 }}
+              whileHover={{ y: -8 }}
+            >
+              {/* Image */}
+              <div className="relative h-48 md:h-56 overflow-hidden">
+                <img
+                  src={service.imgUrl}
+                  alt={service.heading}
+                  className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent" />
+                <h3
+                  className="absolute bottom-4 left-5 right-5 text-xl md:text-2xl font-bold text-white"
+                  style={{ fontFamily: "'Playfair Display', serif" }}
+                >
+                  {service.heading}
+                </h3>
+              </div>
 
-  return (
-    <motion.div style={{ y, opacity }} ref={targetRef} className="absolute left-0 top-0 flex h-screen w-full flex-col items-center justify-center text-white">
-      <p className="mb-2 text-center text-xl md:mb-4 md:text-3xl text-accent-light uppercase tracking-widest">{subheading}</p>
-      <p className="text-center text-4xl font-bold md:text-7xl" style={{ fontFamily: "'Playfair Display', serif" }}>{heading}</p>
-    </motion.div>
-  );
-}
+              {/* Content */}
+              <div className="p-5 md:p-6 bg-white">
+                <p className="text-muted-foreground text-sm leading-relaxed mb-4">
+                  {service.description}
+                </p>
+                <div className="flex flex-wrap gap-2">
+                  {service.tags.map((tag) => (
+                    <span
+                      key={tag}
+                      className="px-3 py-1 rounded-full text-xs font-medium border border-primary/30 text-primary bg-accent/20"
+                    >
+                      {tag}
+                    </span>
+                  ))}
+                </div>
+              </div>
 
-interface ServiceContentProps {
-  title: string;
-  description: string;
-  serviceList: string[];
-}
-
-function ServiceContent({ title, description, serviceList }: ServiceContentProps) {
-  return (
-    <div className="mx-auto grid max-w-5xl grid-cols-1 gap-8 px-4 pb-24 pt-12 md:grid-cols-12">
-      <h3 className="col-span-1 text-3xl font-bold md:col-span-4" style={{ fontFamily: "'Playfair Display', serif" }}>
-        {title}
-      </h3>
-      <div className="col-span-1 md:col-span-8">
-        <p className="mb-6 text-lg text-muted-foreground md:text-xl leading-relaxed">{description}</p>
-        <div className="flex flex-wrap gap-3 mb-8">
-          {serviceList.map((s) => (
-            <span key={s} className="px-4 py-2 rounded-full text-sm font-medium border border-primary/30 text-primary bg-accent/20">{s}</span>
+              {/* Bottom accent bar */}
+              <div className="absolute bottom-0 left-0 right-0 h-1 bg-primary scale-x-0 group-hover:scale-x-100 transition-transform duration-500 origin-left" />
+            </motion.div>
           ))}
         </div>
-        <a href="#contact" className="inline-block rounded-full px-8 py-3 text-sm font-semibold text-white transition-all hover:scale-105 hover:shadow-lg" style={{ background: "var(--gold-gradient)" }}>
-          Get Started →
-        </a>
       </div>
-    </div>
-  );
-}
-
-export function ServicesParallax() {
-  return (
-    <section id="services" className="bg-white">
-      <div className="text-center pt-20 pb-8 px-6">
-        <p className="text-primary text-sm uppercase tracking-[0.2em] font-medium mb-4">What We Offer</p>
-        <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-foreground mb-6" style={{ fontFamily: "'Playfair Display', serif" }}>
-          Our <span className="text-primary">Services</span>
-        </h2>
-        <div className="w-16 h-1 rounded-full bg-primary mx-auto" />
-      </div>
-      {services.map((service) => (
-        <div key={service.heading} style={{ paddingLeft: IMG_PADDING, paddingRight: IMG_PADDING }}>
-          <div className="relative h-[150vh]">
-            <StickyImage imgUrl={service.imgUrl} />
-            <OverlayCopy heading={service.heading} subheading={service.subheading} />
-          </div>
-          <ServiceContent title={service.title} description={service.description} serviceList={service.services} />
-        </div>
-      ))}
     </section>
   );
 }
