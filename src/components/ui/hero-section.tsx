@@ -31,18 +31,19 @@ export function HeroSection() {
 
   return (
     <section className="relative w-full min-h-full flex items-center overflow-hidden">
-      {/* Logo background — revealed behind the shader */}
-      <div className="absolute inset-0 flex items-center justify-center bg-white">
+      {/* Shader Background */}
+      <div className="absolute inset-0">
+        <ShaderAnimation />
+      </div>
+
+      {/* White logo watermark */}
+      <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
         <img
           src="/logo.png"
           alt=""
-          className="w-[50vw] max-w-[600px] h-auto object-contain opacity-1000"
+          className="w-[50vw] max-w-[600px] h-auto object-contain opacity-50"
+          style={{ filter: "brightness(0) invert(1)" }}
         />
-      </div>
-
-      {/* Shader Background — sits on top of the logo, partially transparent */}
-      <div className="absolute inset-0" style={{ mixBlendMode: "multiply" }}>
-        <ShaderAnimation />
       </div>
 
       {/* Dark overlay for text readability */}
@@ -113,7 +114,7 @@ export function HeroSection() {
         >
           <div className="flex items-center gap-2 text-white/60 text-xs md:text-sm">
             <Globe className="w-4 h-4 text-primary" />
-            <span>priyajacoberevents.ch</span>
+            <span>jacoberevents.ch</span>
           </div>
           <div className="flex items-center gap-2 text-white/60 text-xs md:text-sm">
             <Phone className="w-4 h-4 text-primary" />

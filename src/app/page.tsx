@@ -2,22 +2,25 @@
 
 import { useState, useEffect, useCallback, useRef } from "react";
 import NavHeader from "@/components/ui/nav-header";
-import { HeroSection } from "@/components/ui/hero-section";
+import { ParticleHero } from "@/components/ui/particle-hero";
 import { TrustStrip } from "@/components/ui/trust-strip";
 import { AboutSection } from "@/components/ui/about-section";
 import { WhyChooseUs } from "@/components/ui/why-choose-us";
 import { ServicesParallax } from "@/components/ui/services-parallax";
 import { HowItWorks } from "@/components/ui/how-it-works";
-import { EventStyle } from "@/components/ui/event-style";
+import { Gallery } from "@/components/ui/gallery";
 import { ContactSection } from "@/components/ui/contact-section";
 import { Footer } from "@/components/ui/footer";
 
-const SECTIONS = ["home", "about", "services", "packages", "how-it-works", "contact"] as const;
+const SECTIONS = ["home", "about", "services", "gallery", "how-it-works", "contact"] as const;
+const SWIPE_THRESHOLD = 50; // minimum px to count as a swipe
 
 export default function Home() {
   const [activeIndex, setActiveIndex] = useState(0);
   const [isAnimating, setIsAnimating] = useState(false);
   const panelRefs = useRef<(HTMLDivElement | null)[]>([]);
+  const touchStartRef = useRef<{ x: number; y: number } | null>(null);
+  const touchLockedRef = useRef<"horizontal" | "vertical" | null>(null);
 
   const navigateTo = useCallback(
     (index: number) => {
@@ -30,6 +33,52 @@ export default function Home() {
       setTimeout(() => setIsAnimating(false), 750);
     },
     [isAnimating, activeIndex],
+  );
+
+  // ── Touch / swipe handling for mobile ──
+  const handleTouchStart = useCallback((e: React.TouchEvent) => {
+    const touch = e.touches[0];
+    touchStartRef.current = { x: touch.clientX, y: touch.clientY };
+    touchLockedRef.current = null;
+  }, []);
+
+  const handleTouchMove = useCallback((e: React.TouchEvent) => {
+    if (!touchStartRef.current) return;
+    const touch = e.touches[0];
+    const dx = Math.abs(touch.clientX - touchStartRef.current.x);
+    const dy = Math.abs(touch.clientY - touchStartRef.current.y);
+
+    // Lock direction once one axis exceeds 10px
+    if (!touchLockedRef.current && (dx > 10 || dy > 10)) {
+      touchLockedRef.current = dx > dy ? "horizontal" : "vertical";
+    }
+
+    // If swiping horizontally, prevent the default vertical scroll
+    if (touchLockedRef.current === "horizontal") {
+      e.preventDefault();
+    }
+  }, []);
+
+  const handleTouchEnd = useCallback(
+    (e: React.TouchEvent) => {
+      if (!touchStartRef.current) return;
+      const touch = e.changedTouches[0];
+      const deltaX = touch.clientX - touchStartRef.current.x;
+
+      if (touchLockedRef.current === "horizontal" && Math.abs(deltaX) >= SWIPE_THRESHOLD) {
+        if (deltaX < 0) {
+          // Swiped left → next section
+          navigateTo(activeIndex + 1);
+        } else {
+          // Swiped right → previous section
+          navigateTo(activeIndex - 1);
+        }
+      }
+
+      touchStartRef.current = null;
+      touchLockedRef.current = null;
+    },
+    [activeIndex, navigateTo],
   );
 
   useEffect(() => {
@@ -65,7 +114,12 @@ export default function Home() {
       <NavHeader activeSection={SECTIONS[activeIndex]} />
 
       {/* Horizontal slider — full viewport */}
-      <div style={{ position: "relative", overflow: "hidden", height: "100vh" }}>
+      <div
+        style={{ position: "relative", overflow: "hidden", height: "100vh" }}
+        onTouchStart={handleTouchStart}
+        onTouchMove={handleTouchMove}
+        onTouchEnd={handleTouchEnd}
+      >
         <div
           style={{
             display: "flex",
@@ -77,7 +131,7 @@ export default function Home() {
         >
           {/* Panel 0 — Home */}
           <div ref={(el) => { panelRefs.current[0] = el; }} style={panelStyle}>
-            <HeroSection />
+            <ParticleHero />
             <TrustStrip />
             <Footer />
           </div>
@@ -95,9 +149,9 @@ export default function Home() {
             <Footer />
           </div>
 
-          {/* Panel 3 — Packages */}
+          {/* Panel 3 — Gallery */}
           <div ref={(el) => { panelRefs.current[3] = el; }} style={panelStyle}>
-            <EventStyle />
+            <Gallery />
             <Footer />
           </div>
 
